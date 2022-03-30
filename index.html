@@ -22,17 +22,32 @@
             <hr />
             <div class="from-group">
               <label>Vert :</label>
-              <input type="number" class="form-control" v-model="green" />
+              <input
+                type="number"
+                class="form-control"
+                v-model="green"
+                @change="preview"
+              />
             </div>
             <hr />
             <div class="from-group">
               <label>Bleu :</label>
-              <input type="number" class="form-control" v-model="blue" />
+              <input
+                type="number"
+                class="form-control"
+                v-model="blue"
+                @change="preview"
+              />
             </div>
             <hr />
             <div class="from-group">
               <label>Rouge :</label>
-              <input type="number" class="form-control" v-model="red" />
+              <input
+                type="number"
+                class="form-control"
+                v-model="red"
+                @change="preview"
+              />
             </div>
             <hr />
             <div class="col-12">
@@ -87,6 +102,9 @@
           reset() {
             this.squares = [];
             this.resetColors();
+          },
+          preview() {
+            this.selectedSquare = `rgb(${this.red}, ${this.green}, ${this.blue})`;
           },
         },
         computed: {
