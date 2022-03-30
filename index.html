@@ -22,9 +22,11 @@
             <hr />
             <div class="from-group">
               <label>Rouge :</label>
+              <span class="text-danger" v-if="valueRed">{{errorMessage}}</span>
               <input
                 type="number"
                 class="form-control"
+                :class="{'text-white bg-danger' : valueRed }"
                 v-model="red"
                 @change="preview"
               />
@@ -32,9 +34,13 @@
             <hr />
             <div class="from-group">
               <label>Vert :</label>
+              <span class="text-danger" v-if="valueGreen"
+                >{{errorMessage}}</span
+              >
               <input
                 type="number"
                 class="form-control"
+                :class="{'text-white bg-danger' : valueGreen }"
                 v-model="green"
                 @change="preview"
               />
@@ -42,9 +48,11 @@
             <hr />
             <div class="from-group">
               <label>Bleu :</label>
+              <span class="text-danger" v-if="valueBlue">{{errorMessage}}</span>
               <input
                 type="number"
                 class="form-control"
+                :class="{'text-white bg-danger' : valueBlue }"
                 v-model="blue"
                 @change="preview"
               />
@@ -52,7 +60,11 @@
             <hr />
 
             <div class="col-12">
-              <button class="btn btn-primary" @click="saveSquare()">
+              <button
+                class="btn btn-primary"
+                :class="isDisabled"
+                @click="saveSquare()"
+              >
                 Sauvegarder
               </button>
               <button class="btn btn-secondary" @click="reset()">
@@ -70,7 +82,7 @@
                 @click="displaySvgSquare(square)"
               ></div>
             </div>
-            <h3 v-else>Ajoutez des couleurs !</h3>
+            <h3 v-else>Ajoutez des couleurs&nbsp;!</h3>
           </div>
         </div>
         <div class="col-6">
@@ -91,6 +103,10 @@
           red: 0,
           squares: [],
           selectedSquare: "",
+          valueRed: false,
+          valueGreen: false,
+          valueBlue: false,
+          errorMessage: "Veuillez choisir une valeur entre 0 et 255",
         },
         methods: {
           resetColors() {
@@ -99,6 +115,7 @@
           },
           saveSquare() {
             this.squares.push(`rgb(${this.red}, ${this.green}, ${this.blue})`);
+            console.log(this.squares);
             this.resetColors();
           },
           reset() {
@@ -119,10 +136,33 @@
           nbOfSquares() {
             return this.squares.length;
           },
+          isDisabled() {
+            return this.valueRed || this.valueGreen || this.valueBlue
+              ? "disabled"
+              : "";
+          },
         },
         watch: {
-          selectedSquare(newSelSq, oldSelSq) {
-            console.log(this.selectedSquare);
+          red() {
+            if (this.red > 255 || this.red < 0) {
+              this.valueRed = true;
+            } else {
+              this.valueRed = false;
+            }
+          },
+          green() {
+            if (this.green > 255 || this.green < 0) {
+              this.valueGreen = true;
+            } else {
+              this.valueGreen = false;
+            }
+          },
+          blue() {
+            if (this.blue > 255 || this.blue < 0) {
+              this.valueBlue = true;
+            } else {
+              this.valueBlue = false;
+            }
           },
         },
       });
